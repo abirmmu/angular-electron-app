@@ -3,3 +3,16 @@
     {{ 'PAGES.HOME.TITLE' | translate }}
   </h1>
 </div>
+<div class="hottable-container" id="excel">
+  <hotTable [data]="dataObj" 
+            [columns]="columns" 
+            [colHeaders]="colHeaders" 
+            [options]="options"
+           >
+  </hotTable>
+</div>
+<div class="button-container">
+  <button type="button" (click)="downloadPDF()">Download PDF</button>
+  <button type="button" (click)="exportToCSV()">Export to CSV</button>
+  <button type="button" (click)="exportToExcel()">Export to Excel</button>
+</div>

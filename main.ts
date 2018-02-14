@@ -1,7 +1,8 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, Menu } from 'electron';
 import * as path from 'path';
+const PDFWindow = require('electron-pdf-window');
 
-let win, serve;
+let win, serve, pdfWin;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 import * as url from 'url';
@@ -10,6 +11,49 @@ if (serve) {
   require('electron-reload')(__dirname, {
   });
 }
+
+const template = [
+  {
+    label: 'File'
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Call Angular Method',
+        click (item, focusedWindow) {
+          if (focusedWindow) {
+            focusedWindow.webContents.send('call-angular-method')
+          }
+        }
+      }
+    ]
+  },
+  {
+    label: 'Reports',
+    submenu: [
+      {
+        label: 'PDF Preview',
+        click () {
+          pdfWin = new PDFWindow({
+            width: 800,
+            height: 600
+          })
+
+          pdfWin.loadURL('http://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf');
+         }
+      },
+      {
+        label: 'Download PDF',
+        click (item, focusedWindow) {
+          if (focusedWindow) {
+            focusedWindow.webContents.send('download-pdf');
+          }
+        }
+      }
+    ]
+  }
+]
 
 function createWindow() {
 
@@ -43,6 +87,9 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
 
 try {

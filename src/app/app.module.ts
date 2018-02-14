@@ -4,8 +4,10 @@ import 'polyfills';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HotTableModule } from 'ng2-handsontable';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -32,8 +34,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     WebviewDirective
   ],
   imports: [
+    HotTableModule,
     BrowserModule,
     FormsModule,
+    HttpModule,
     HttpClientModule,
     AppRoutingModule,
     TranslateModule.forRoot({
