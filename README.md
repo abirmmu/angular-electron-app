@@ -31,7 +31,7 @@ With this sample, you can :
 Clone this repository locally :
 
 ``` bash
-git clone https://github.com/tricon-himani/angular-electron.git
+git clone https://github.com/maximegris/angular-electron.git
 ```
 
 Install dependencies with npm :
@@ -111,3 +111,18 @@ You can run tests with the command lines below :
 [<img alt="Himani Singh" src="https://avatars1.githubusercontent.com/u/36261361?s=400&u=f7ea961a8197a0a960210cbcb0e9b8cee0cdaf8f&v=4" width="117">](https://github.com/tricon-himani) |
 :---:
 |[Himani Singh](https://github.com/tricon-himani)|
+
+[build-badge]: https://travis-ci.org/maximegris/angular-electron.svg?branch=master
+[build]: https://travis-ci.org/maximegris/angular-electron.svg?branch=master
+[dependencyci-badge]: https://dependencyci.com/github/maximegris/angular-electron/badge
+[dependencyci]: https://dependencyci.com/github/maximegris/angular-electron
+[license-badge]: https://img.shields.io/badge/license-Apache2-blue.svg?style=flat
+[license]: https://github.com/maximegris/angular-electron/blob/master/LICENSE.md
+[prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[prs]: http://makeapullrequest.com
+[github-watch-badge]: https://img.shields.io/github/watchers/maximegris/angular-electron.svg?style=social
+[github-watch]: https://github.com/maximegris/angular-electron/watchers
+[github-star-badge]: https://img.shields.io/github/stars/maximegris/angular-electron.svg?style=social
+[github-star]: https://github.com/maximegris/angular-electron/stargazers
+[twitter]: https://twitter.com/intent/tweet?text=Check%20out%20angular-electron!%20https://github.com/maximegris/angular-electron%20%F0%9F%91%8D
+[twitter-badge]: https://img.shields.io/twitter/url/https/github.com/maximegris/angular-electron.svg?style=social
