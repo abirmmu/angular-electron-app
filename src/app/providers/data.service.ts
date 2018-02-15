@@ -14,7 +14,6 @@ export class DataService {
     public getJSON(): Observable<any> {
          return this.http.get('../src/mocks/data.json')
                 .map((response: Response) => {
-                    console.log('mock data' + response.json());
                     return response.json();
                 }
                 )

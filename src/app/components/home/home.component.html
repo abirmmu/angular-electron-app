@@ -15,4 +15,9 @@
   <button type="button" (click)="downloadPDF()">Download PDF</button>
   <button type="button" (click)="exportToCSV()">Export to CSV</button>
   <button type="button" (click)="exportToExcel()">Export to Excel</button>
+  <div>
+    <input type='file' accept='text/json' multiple (change)='openFile($event)'>
+  </div>
+  <button type="button" (click)="saveFile()">Save File</button>
+  
 </div>

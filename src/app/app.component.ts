@@ -7,7 +7,6 @@ import { PdfGeneratorService } from './providers/pdfGenerator.service';
 import { ExcelService } from './providers/excel.service';
 import { XlGenService } from './providers/xlgen.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

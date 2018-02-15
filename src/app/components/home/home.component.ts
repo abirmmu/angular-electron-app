@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
   columns: any;
   colHeaders: any;
   options: any;
+  fileToUpload: File = null;
+
   constructor(public dataService: DataService,
               public pdfGeneratorService: PdfGeneratorService,
               public excelService: XlGenService) { }
@@ -179,6 +181,39 @@ export class HomeComponent implements OnInit {
   exportToExcel() {
   //  this.excelService.exportAsExcelFile(this.dataObj, 'export to excel');
     this.excelService.callgenXL();
+  }
+
+  // handleFileInput(files: FileList) {
+  //   this.fileToUpload = files.item(0);
+  //   this.uploadFileToActivity();
+  // }
+
+  // uploadFileToActivity() {
+  //   this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
+  //     // do something, if upload success
+  //     console.log(data);
+  //     }, error => {
+  //       console.log(error);
+  //     });
+  // }
+
+  openFile(event) {
+    const input = event.target;
+    for (let index = 0; index < input.files.length; index++) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            // this 'text' is the content of the file
+            const text = reader.result;
+            console.log('text', JSON.parse(text));
+        }
+        reader.readAsText(input.files[index]);
+    };
+  }
+
+  saveFile() {
+    const debug = {hello: 'world'};
+    const blob = new Blob([JSON.stringify(debug, null, 2)], {type : 'application/json'});
+    this.excelService.saveAsJSONFile(blob, 'saveAsFileExample');
   }
 
 }

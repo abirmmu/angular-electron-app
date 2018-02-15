@@ -9,7 +9,9 @@ import * as _ from 'lodash';
 // const _ = require('lodash');
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const JSON_TYPE = 'application/json';
 const EXCEL_EXTENSION = '.xlsx';
+const JSON_EXTENSION = '.json';
 
 @Injectable()
 export class XlGenService {
@@ -32,6 +34,13 @@ export class XlGenService {
         type: EXCEL_TYPE
         });
         FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    }
+
+    saveAsJSONFile(buffer: any, fileName: string): void {
+        const data: Blob = new Blob([buffer], {
+        type: JSON_TYPE
+        });
+        FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + JSON_EXTENSION);
     }
 
     genXL() {
@@ -103,28 +112,28 @@ export class XlGenService {
             bottom: { style: 'double' }
         };
         const creaditTotalD = `D${rowNo}`;
-    
+
         ws.getCell(creaditTotalD).border = {
             top: { style: 'thin' },
             bottom: { style: 'double' }
         };
-    
-    
+
+
         ws.getCell(debitTotalC).numFmt = '$ #,##';
         ws.getCell(creaditTotalD).numFmt = '$ #,##';
-    
-    
-    
-    
+
+
+
+
         // ws.mergeCells('A1:D1')
         // ws.getCell('A1').value = 'City of Smithville';
         // ws.getCell('A1').alignment = { vertical: 'middle', horizontal: 'center' };
         // ws.getCell('A1').font = {
         //     bold: true
         // };
-    
+
         // ws.addRow([]);
-    
+
         // ws.addRow(["Cash", '', 553715, '']);
         // ws.addRow(["Allowance for Uncollectible Delinquent Taxes", '', '', 105430]);
         // ws.addRow(["Allowance for Uncollectible Delinquent Taxes", '', '', 105430]);
