@@ -1,5 +1,6 @@
 [{
 	"id": 1,
+	"checkedTemplate": "Yes",
 	"currencyCode": "EUR",
 	"currency": "Euro",
 	"level": 0.9033,

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen, Menu } from 'electron';
+import { app, BrowserWindow, screen, Menu, dialog } from 'electron';
 import * as path from 'path';
 const PDFWindow = require('electron-pdf-window');
 
@@ -86,6 +86,20 @@ function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+  });
+
+  win.on('close', (e) => {
+    const choice = dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        title: 'Confirm',
+        message: 'Do you want to close without saving changes?',
+        defaultId: 0
+     });
+     if (choice === 1) {
+       e.preventDefault();
+     }
   });
 
   const menu = Menu.buildFromTemplate(template);

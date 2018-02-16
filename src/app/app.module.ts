@@ -20,7 +20,7 @@ import { ElectronService } from './providers/electron.service';
 import { WebviewDirective } from 'app/directives/webview.directive';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent, PromptBoxComponent } from './components';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -31,6 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
+    PromptBoxComponent,
     WebviewDirective
   ],
   imports: [

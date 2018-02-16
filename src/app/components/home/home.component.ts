@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../providers/data.service';
-import { PdfGeneratorService } from '../../providers/pdfGenerator.service';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DataService, PdfGeneratorService, XlGenService } from '../../providers';
 import * as jsPDF from 'jspdf';
+import * as $ from 'jquery';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
-import { ExcelService } from '../../providers/excel.service';
-import { XlGenService } from '../../providers/xlgen.service';
+import { PromptBoxComponent } from '../common';
+import excelData from './excel-data';
+import { HotTableComponent } from 'ng2-handsontable';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [DataService, PdfGeneratorService, ExcelService, XlGenService]
+  providers: [DataService, PdfGeneratorService, XlGenService],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit {
 
@@ -19,88 +22,55 @@ export class HomeComponent implements OnInit {
   colHeaders: any;
   options: any;
   fileToUpload: File = null;
+  uriString: any;
+  @ViewChild(PromptBoxComponent) promptPopUp: PromptBoxComponent;
+  @ViewChild(HotTableComponent) hot: HotTableComponent;
 
   constructor(public dataService: DataService,
               public pdfGeneratorService: PdfGeneratorService,
-              public excelService: XlGenService) { }
+              public xlGenService: XlGenService,
+              public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.dataService.getJSON().subscribe(data =>
       this.dataObj = data,
-      error => console.log(error));
+    error => console.log(error));
 
-    this.columns = [
-      {
-        data: 'Select',
-        type: 'checkbox',
-        checkedTemplate: 'Yes',
-        uncheckedTemplate: 'No'
-      },
-      {
-        data: 'id',
-        type: 'numeric'
-      },
-      {
-        data: 'currencyCode',
-        type: 'text'
-      },
-      {
-        data: 'currency',
-        type: 'text'
-      },
-      {
-        data: 'level',
-        type: 'numeric',
-        numericFormat: {
-          pattern: '0.0000'
-        }
-      },
-      {
-        data: 'units',
-        type: 'text'
-      },
-      {
-        data: 'asOf',
-        type: 'date',
-        dateFormat: 'MM/DD/YYYY'
-      },
-      {
-        data: 'onedChng',
-        type: 'numeric',
-        numericFormat: {
-          pattern: '0.00%'
-        }
-      }
-    ];
-    this.colHeaders =  [
-      'Select',
-      'ID',
-      'Code',
-      'Currency',
-      'Level',
-      'Units',
-      'Date',
-      'Change'
-    ];
+    this.columns = [{ data: 'Select', type: 'checkbox', checkedTemplate: 'Yes', uncheckedTemplate: 'No' },
+                    { data: 'id', type: 'numeric' },
+                    { data: 'currencyCode', type: 'text' },
+                    { data: 'currency', type: 'text' },
+                    { data: 'level', type: 'numeric', numericFormat: {  pattern: '0.0000' }},
+                    { data: 'units', type: 'text' },
+                    { data: 'asOf', type: 'text', dateFormat: 'MM/DD/YYYY' },
+                    { data: 'onedChng', type: 'numeric', numericFormat: { pattern: '0.00%' }}
+                  ];
+    this.colHeaders =  [ 'Select', 'ID', 'Code',  'Currency', 'Level', 'Units', 'Date', 'Change' ];
+
+
      this.options = {
       stretchH: 'all',
       manualColumnResize: true,
+                //  className: 'my-table-container',
   //    manualRowResize: true,
       readOnly: true,
     //  fixedRowsTop: 2,
   //    fixedColumnsLeft: 2,
-      mergeCells: true,
+   //   mergeCells: true,
   //    contextMenu: true,
  //     manualRowMove: true,
       manualColumnMove: true,
       columnSorting: true,
   //    rowHeaders: true,
   //    colHeaders: true,
-      colWidths: [40, 55, 80, 80, 80, 80, 80, 80],
+       colWidths: [40, 55, 80, 80, 80, 80, 80, 80],
   //    rowHeights: [50, 40, 100],
-      // contextMenu: [
-      //   'row_above', 'row_below', 'remove_row', 'Unpost Entry'
-      // ],
+      // declares a list of merged sections:
+      mergeCells: [
+        {row: 1, col: 1, rowspan: 3, colspan: 3},
+        {row: 3, col: 4, rowspan: 2, colspan: 2},
+        {row: 5, col: 6, rowspan: 3, colspan: 3}
+      ],
       contextMenu: {
         callback: function (key, options) {
           if (key === 'unpost') {
@@ -147,55 +117,26 @@ export class HomeComponent implements OnInit {
 
   downloadPDF() {
     const elementToPrint = document.getElementById('excel');
-    this.pdfGeneratorService.GeneratePDF(elementToPrint);
+  //  this.pdfGeneratorService.GeneratePDF(elementToPrint);
+    const doc = new jsPDF();
+    doc.addHTML(elementToPrint, () => {
+      doc.save('downloadPDf.pdf');
+    //  const data = doc.output('dataurlstring', {});
+    //  this.uriString = this.sanitizer.bypassSecurityTrustResourceUrl(data);
+   //   console.log(this.uriString);
+   //   $('#report').html('<iframe src="data"></iframe>');
+    });
   }
 
   exportToCSV() {
-    const data = [
-      {
-        name: 'Test 1',
-        age: 13,
-        average: 8.2,
-        approved: true,
-        description: 'using Content here, content here '
-      },
-      {
-        name: '',
-        age: 11,
-        average: 8.2,
-        approved: true,
-        description: 'using Content here, content here'
-      },
-      {
-        name: 'Test 4',
-        age: 10,
-        average: 8.2,
-        approved: true,
-        description: 'using Content here, content here '
-      },
-    ];
-
+    const data = excelData;
     const angular2Csv = new Angular2Csv(data, 'My Report');
   }
 
   exportToExcel() {
   //  this.excelService.exportAsExcelFile(this.dataObj, 'export to excel');
-    this.excelService.callgenXL();
+    this.xlGenService.callgenXL();
   }
-
-  // handleFileInput(files: FileList) {
-  //   this.fileToUpload = files.item(0);
-  //   this.uploadFileToActivity();
-  // }
-
-  // uploadFileToActivity() {
-  //   this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
-  //     // do something, if upload success
-  //     console.log(data);
-  //     }, error => {
-  //       console.log(error);
-  //     });
-  // }
 
   openFile(event) {
     const input = event.target;
@@ -213,7 +154,16 @@ export class HomeComponent implements OnInit {
   saveFile() {
     const debug = {hello: 'world'};
     const blob = new Blob([JSON.stringify(debug, null, 2)], {type : 'application/json'});
-    this.excelService.saveAsJSONFile(blob, 'saveAsFileExample');
+    this.xlGenService.saveAsJSONFile(blob, 'saveAsFileExample');
+  }
+
+  showPromptBox() {
+    this.promptPopUp.showPromptBox();
+  }
+
+  onPromptAction(event) {
+    console.log('onPromptAction: ', event.textBoxValue);
+
   }
 
 }

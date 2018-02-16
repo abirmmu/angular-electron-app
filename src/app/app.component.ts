@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
-import { ElectronService } from './providers/electron.service';
+import { ElectronService,  DataService, PdfGeneratorService, XlGenService } from './providers';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeComponent } from './components/home/home.component';
-import { DataService } from './providers/data.service';
-import { PdfGeneratorService } from './providers/pdfGenerator.service';
-import { ExcelService } from './providers/excel.service';
-import { XlGenService } from './providers/xlgen.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [HomeComponent, DataService, PdfGeneratorService, ExcelService, XlGenService]
+  providers: [HomeComponent, DataService, PdfGeneratorService, XlGenService]
 })
 export class AppComponent {
   constructor(public electronService: ElectronService,

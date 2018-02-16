@@ -3,7 +3,7 @@
     {{ 'PAGES.HOME.TITLE' | translate }}
   </h1>
 </div>
-<div class="hottable-container" id="excel">
+<div class="hottable-container" id="excel" aria-label="table">
   <hotTable [data]="dataObj" 
             [columns]="columns" 
             [colHeaders]="colHeaders" 
@@ -12,12 +12,14 @@
   </hotTable>
 </div>
 <div class="button-container">
-  <button type="button" (click)="downloadPDF()">Download PDF</button>
-  <button type="button" (click)="exportToCSV()">Export to CSV</button>
-  <button type="button" (click)="exportToExcel()">Export to Excel</button>
+  <button type="button" (click)="downloadPDF()" tabindex="1">Download PDF</button>
+  <button type="button" (click)="exportToCSV()" tabindex="2">Export to CSV</button>
+  <button type="button" (click)="exportToExcel()" tabindex="3">Export to Excel</button>
   <div>
-    <input type='file' accept='text/json' multiple (change)='openFile($event)'>
+    <input type='file' accept='text/json' multiple (change)='openFile($event)' tabindex="4">
   </div>
-  <button type="button" (click)="saveFile()">Save File</button>
-  
+  <button type="button" (click)="saveFile()" tabindex="5">Save File</button>  
+  <button type="button" (click)="showPromptBox()" tabindex="6">Show Prompt Box</button>  
 </div>
+<app-prompt-box (onPrompt)="onPromptAction($event)"></app-prompt-box>
+<!-- <iframe [src]='uriString' width="640" height="360" ></iframe> -->
