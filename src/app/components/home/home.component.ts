@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   options: any;
   fileToUpload: File = null;
   uriString: any;
+  recentProjects: Array<any> = [];
   @ViewChild(PromptBoxComponent) promptPopUp: PromptBoxComponent;
   @ViewChild(HotTableComponent) hot: HotTableComponent;
 
@@ -35,6 +36,8 @@ export class HomeComponent implements OnInit {
     this.dataService.getJSON().subscribe(data =>
       this.dataObj = data,
     error => console.log(error));
+
+    this.recentProjects = localStorage.getItem('recentProjects') ? JSON.parse(localStorage.getItem('recentProjects')) : [];
 
     this.columns = [{ data: 'Select', type: 'checkbox', checkedTemplate: 'Yes', uncheckedTemplate: 'No' },
                     { data: 'id', type: 'numeric' },
@@ -121,8 +124,8 @@ export class HomeComponent implements OnInit {
     const doc = new jsPDF();
     doc.addHTML(elementToPrint, () => {
       doc.save('downloadPDf.pdf');
-    //  const data = doc.output('dataurlstring', {});
-    //  this.uriString = this.sanitizer.bypassSecurityTrustResourceUrl(data);
+   //  const data = doc.output('dataurlstring', {});
+   //   this.uriString = this.sanitizer.bypassSecurityTrustResourceUrl(doc.output('dataurlstring', {}));
    //   console.log(this.uriString);
    //   $('#report').html('<iframe src="data"></iframe>');
     });
@@ -141,6 +144,7 @@ export class HomeComponent implements OnInit {
   openFile(event) {
     const input = event.target;
     for (let index = 0; index < input.files.length; index++) {
+        this.recentProjects.push(input.files[index].path);
         const reader = new FileReader();
         reader.onload = () => {
             // this 'text' is the content of the file
@@ -148,6 +152,8 @@ export class HomeComponent implements OnInit {
             console.log('text', JSON.parse(text));
         }
         reader.readAsText(input.files[index]);
+        console.log('file path', this.recentProjects);
+        localStorage.setItem('recentProjects', JSON.stringify(this.recentProjects));
     };
   }
 

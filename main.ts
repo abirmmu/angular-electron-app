@@ -1,6 +1,9 @@
 import { app, BrowserWindow, screen, Menu, dialog } from 'electron';
 import * as path from 'path';
-const PDFWindow = require('electron-pdf-window');
+import electronSquirrel from 'electron-squirrel-startup';
+
+import * as PDFWindow from 'electron-pdf-window';
+// const PDFWindow = require('electron-pdf-window');
 
 let win, serve, pdfWin;
 const args = process.argv.slice(1);
@@ -14,7 +17,15 @@ if (serve) {
 
 const template = [
   {
-    label: 'File'
+    label: 'File',
+    submenu: [
+      {
+        label: 'Recent Folders',
+        click () {
+           console.log('****path****', app.getPath('desktop'));
+        }
+      }
+    ]
   },
   {
     label: 'Edit',
@@ -23,7 +34,7 @@ const template = [
         label: 'Call Angular Method',
         click (item, focusedWindow) {
           if (focusedWindow) {
-            focusedWindow.webContents.send('call-angular-method')
+            focusedWindow.webContents.send('call-angular-method');
           }
         }
       }
@@ -33,15 +44,15 @@ const template = [
     label: 'Reports',
     submenu: [
       {
-        label: 'PDF Preview',
-        click () {
-          pdfWin = new PDFWindow({
-            width: 800,
-            height: 600
-          })
+         label: 'PDF Preview',
+          click () {
+            pdfWin = new PDFWindow({
+              width: 800,
+              height: 600
+            })
 
-          pdfWin.loadURL('http://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf');
-         }
+            pdfWin.loadURL('http://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf');
+          }
       },
       {
         label: 'Download PDF',
@@ -56,6 +67,10 @@ const template = [
 ]
 
 function createWindow() {
+
+  if (electronSquirrel) {
+    return;
+  }
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
