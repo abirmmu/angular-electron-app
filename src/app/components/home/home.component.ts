@@ -137,7 +137,6 @@ export class HomeComponent implements OnInit {
   }
 
   exportToExcel() {
-  //  this.excelService.exportAsExcelFile(this.dataObj, 'export to excel');
     this.xlGenService.callgenXL();
   }
 
